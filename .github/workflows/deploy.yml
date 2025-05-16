@@ -13,23 +13,18 @@ jobs:
         working-directory: ./backend
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Install Backend Dependencies
-      run: npm install
+      - name: Install Backend Dependencies
+        run: npm install
 
-    - name: Deploy Backend to Heroku
-      run: |
-        git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/coordinatorapp.git
-        git push heroku main -f
-git add .
-git commit -m "Recreate deploy.yml in correct location"
-git push
-# trigger fix
-
+      - name: Deploy Backend to Heroku
+        run: |
+          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/coordinatorapp.git
+          git push heroku main -f
