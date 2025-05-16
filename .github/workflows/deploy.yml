@@ -1,5 +1,3 @@
-# .github/workflows/deploy.yml
-
 name: Deploy Backend to Heroku
 
 on:
@@ -10,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
 
     steps:
     - name: Checkout code
@@ -18,21 +19,17 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20' # Specify your Node.js version
+        node-version: '20'
 
     - name: Install Backend Dependencies
       run: npm install
-      working-directory: ./backend # Ensure dependencies are installed in the backend folder
 
     - name: Deploy Backend to Heroku
-      # This step runs only on successful pushes to the main branch
-      if: success() && github.ref == 'refs/heads/main'
       run: |
-        # Add the Heroku remote using the API key for authentication
-        # Replace YOUR_HEROKU_APP_NAME with the actual name of your Heroku application
         git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/coordinatorapp.git
-        # Force push the current state of the main branch from the working directory to Heroku's main branch
         git push heroku main -f
-      working-directory: ./backend # Execute git commands from within the backend folder
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }} # Make the secret available as an environment variable for the git remote URL
+git add .
+git commit -m "Recreate deploy.yml in correct location"
+git push
+# trigger fix
+
